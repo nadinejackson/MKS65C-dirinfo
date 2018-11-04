@@ -30,8 +30,15 @@ char * ll()
   DIR * directory = opendir(".");
   struct dirent * p = readdir(directory);
   struct stat * buf = malloc(sizeof(struct stat));
+  
   while (p) {
     int exam = stat(p->d_name, buf);
+
+    //directory or no
+    if (p->d_type == 4)
+      printf("d");
+    else
+      printf("-");
     
     //permissions
     char s[9];
