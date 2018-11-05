@@ -24,14 +24,22 @@ void rwx(int permissions, char perms[])
     permissions /= 2;
   }
 }
-char * ll()
+void ll()
 {
   
   DIR * directory = opendir(".");
   struct dirent * p = readdir(directory);
   struct stat * buf = malloc(sizeof(struct stat));
+  unsigned int totalSize = 0;
+  
   while (p) {
     int exam = stat(p->d_name, buf);
+
+    //directory?
+    if (p->d_type == 4)
+        printf("d");
+    else
+        printf("-");
     
     //permissions
     char s[9];
@@ -40,6 +48,7 @@ char * ll()
     
     //size
     printf("%ld\t", buf->st_size);
+    totalSize += buf->st_size;
 
     //time
     int len = strlen(ctime(&(buf->st_atime)));
@@ -53,6 +62,8 @@ char * ll()
 
     p = readdir(directory);
   }
+
+  printf("Total size: %u\n", totalSize);
 }
 
 int main()
