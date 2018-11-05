@@ -24,10 +24,10 @@ void rwx(int permissions, char perms[])
     permissions /= 2;
   }
 }
-void ll()
+void ll(char * path)
 {
   
-  DIR * directory = opendir(".");
+  DIR * directory = opendir(path);
   struct dirent * p = readdir(directory);
   struct stat * buf = malloc(sizeof(struct stat));
   long size;
@@ -132,12 +132,13 @@ long total_size(char * path)
 }
   
   
-int main()
+int main(int argc, char * argv[])
 {
   printf("~~~~~~~~~~~~ll-style output~~~~~~~~~~~~\n");
-  ll();
+  printf("%s", argv[1]);
+  ll(argv[1]);
   printf("~~~~~~~~~~~~tree-style output~~~~~~~~~~~~\n");
-  tree(".", 0);
+  tree(argv[1], 0);
   printf("~~~~~~~~~~~~total size including subdirectories~~~~~~~~~~~~\n");
   printf("Total size: %ld KB\n", total_size(".") / 1024);
   //printf("│= pipe, ├ = junction,  ─ = horizontal bar\n");
