@@ -30,7 +30,7 @@ char * ll()
   DIR * directory = opendir(".");
   struct dirent * p = readdir(directory);
   struct stat * buf = malloc(sizeof(struct stat));
-  
+  long size;
   while (p) {
     int exam = stat(p->d_name, buf);
 
@@ -46,8 +46,14 @@ char * ll()
     printf("%s ", s);
     
     //size
-    printf("%ld\t", buf->st_size);
-
+    size = buf->st_size;
+    if (size < 1024)
+      printf("%ld KB    ", size);
+    else
+      printf("%ld B     ", size /= 1024);
+    while(size /= 10)
+      printf("\b");
+    
     //time
     int len = strlen(ctime(&(buf->st_atime)));
     char time[len];
