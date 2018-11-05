@@ -1,0 +1,24 @@
+.
+├── a.out
+├── dir.c
+├── dir.o
+├── ghost_quartet
+│   ├── 1
+│   │   ├── camera_shop
+│   │   ├── idk
+│   │   ├── starchild
+│   │   ├── subway
+│   │   └── usher_pt_1
+│   ├── 2
+│   ├── 3
+│   ├── 4
+│   ├── astronomer
+│   ├── bear
+│   ├── pearl
+│   └── rose
+├── makefile
+├── place
+├── README.md
+└── Wu.Raymond.txt
+
+5 directories, 16 files
