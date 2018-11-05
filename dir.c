@@ -79,8 +79,6 @@ void tree(char * path, int level)
   DIR * directory = opendir(path);
   struct dirent * p = readdir(directory);
   struct stat * buf = malloc(sizeof(struct stat));
-  long size;
-  long total_size = 0;
   int exam;
   while (p) {
     exam = stat(p->d_name, buf);
@@ -103,6 +101,35 @@ void tree(char * path, int level)
   }
   free(buf);
 }
+long total_size(char * path)
+{
+  DIR * directory = opendir(path);
+  struct dirent * p = readdir(directory);
+  struct stat * buf = malloc(sizeof(struct stat));
+  long size;
+  long total = 0;
+  int exam;
+  while (p) {
+    exam = stat(p->d_name, buf);
+    if (strcmp(p->d_name, ".") && strcmp(p->d_name, ".."))
+      {if (p->d_type == 4)
+	  {
+	    char new[32];
+	    strcpy(new, path);
+	    strcpy(new + strlen(path), "/");
+	    strcpy(new + strlen(path) + 1, p->d_name);
+	    total += total_size(new);
+	  }
+	else
+	  {
+	    total += buf->st_size;
+	  }
+      }
+    p = readdir(directory);
+  }
+  free(buf);
+  return total;
+}
   
   
 int main()
@@ -111,6 +138,8 @@ int main()
   ll();
   printf("~~~~~~~~~~~~tree-style output~~~~~~~~~~~~\n");
   tree(".", 0);
+  printf("~~~~~~~~~~~~total size including subdirectories~~~~~~~~~~~~\n");
+  printf("Total size: %ld KB\n", total_size(".") / 1024);
   //printf("│= pipe, ├ = junction,  ─ = horizontal bar\n");
   return 0;
 }
