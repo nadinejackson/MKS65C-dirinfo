@@ -31,8 +31,10 @@ char * ll()
   struct dirent * p = readdir(directory);
   struct stat * buf = malloc(sizeof(struct stat));
   long size;
+  long total_size = 0;
+  int exam;
   while (p) {
-    int exam = stat(p->d_name, buf);
+    exam = stat(p->d_name, buf);
 
     //directory or no
     if (p->d_type == 4)
@@ -47,10 +49,11 @@ char * ll()
     
     //size
     size = buf->st_size;
+    total_size += size;
     if (size < 1024)
-      printf("%ld KB    ", size);
+      printf("%ld B      ", size);
     else
-      printf("%ld B     ", size /= 1024);
+      printf("%ld KB     ", size /= 1024);
     while(size /= 10)
       printf("\b");
     
@@ -66,10 +69,13 @@ char * ll()
 
     p = readdir(directory);
   }
+  free(buf);
+  printf("\nThe total size of files in this directory is %ld KB\n", total_size / 1024);
 }
 
 int main()
 {
+  printf("~~~~~~~~~~~~ll-style output~~~~~~~~~~~~\n");
   ll();
   return 0;
 }
