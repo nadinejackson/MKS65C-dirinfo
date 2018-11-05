@@ -24,7 +24,7 @@ void rwx(int permissions, char perms[])
     permissions /= 2;
   }
 }
-char * ll()
+void ll()
 {
   
   DIR * directory = opendir(".");
