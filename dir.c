@@ -26,7 +26,6 @@ void rwx(int permissions, char perms[])
 }
 void ll(char * path)
 {
-  
   DIR * directory = opendir(path);
   struct dirent * p = readdir(directory);
   struct stat * buf = malloc(sizeof(struct stat));
@@ -74,6 +73,7 @@ void ll(char * path)
   closedir(directory);
 }
 
+
 void tree(char * path, int level)
 {
   DIR * directory = opendir(path);
@@ -101,6 +101,7 @@ void tree(char * path, int level)
   }
   free(buf);
 }
+
 long total_size(char * path)
 {
   DIR * directory = opendir(path);
@@ -112,7 +113,8 @@ long total_size(char * path)
   while (p) {
     exam = stat(p->d_name, buf);
     if (strcmp(p->d_name, ".") && strcmp(p->d_name, ".."))
-      {if (p->d_type == 4)
+      {
+	if (p->d_type == 4)
 	  {
 	    char new[32];
 	    strcpy(new, path);
@@ -137,17 +139,23 @@ int main(int argc, char * argv[])
   char dir[32];
   if (argc < 2)
     {
-    printf("which dir?\n");
-    scanf("%s", dir);
+      printf("Which directory would you like to see?\n");
+      scanf("%s", dir);
     }
   else
     strcpy(dir, argv[1]);
-  printf("~~~~~~~~~~~~ll-style output~~~~~~~~~~~~\n");
-  ll(dir);
-  printf("~~~~~~~~~~~~tree-style output~~~~~~~~~~~~\n");
-  tree(dir, 0);
-  printf("~~~~~~~~~~~~total size including subdirectories~~~~~~~~~~~~\n");
-  printf("Total size: %ld KB\n", total_size(".") / 1024);
-  //printf("│= pipe, ├ = junction,  ─ = horizontal bar\n");
+  DIR * directory = opendir(dir);
+  if (!errno)
+    {
+      printf("~~~~~~~~~~~~ll-style output~~~~~~~~~~~~\n");
+      ll(dir);
+      printf("~~~~~~~~~~~~tree-style output~~~~~~~~~~~~\n");
+      tree(dir, 0);
+      printf("~~~~~~~~~~~~total size including subdirectories~~~~~~~~~~~~\n");
+      printf("Total size: %ld KB\n", total_size(".") / 1024);
+      //printf("│= pipe, ├ = junction,  ─ = horizontal bar\n");
+    }
+  else
+    perror("Error");
   return 0;
 }
