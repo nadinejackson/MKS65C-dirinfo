@@ -100,6 +100,7 @@ void tree(char * path, int level)
     p = readdir(directory);
   }
   free(buf);
+  closedir(directory);
 }
 
 long total_size(char * path)
@@ -130,6 +131,7 @@ long total_size(char * path)
     p = readdir(directory);
   }
   free(buf);
+  closedir(directory);
   return total;
 }
   
@@ -154,6 +156,7 @@ int main(int argc, char * argv[])
       printf("~~~~~~~~~~~~total size including subdirectories~~~~~~~~~~~~\n");
       printf("Total size: %ld KB\n", total_size(".") / 1024);
       //printf("│= pipe, ├ = junction,  ─ = horizontal bar\n");
+      closedir(directory);
     }
   else
     perror("Error");
