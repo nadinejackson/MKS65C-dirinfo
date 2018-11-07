@@ -87,7 +87,7 @@ void tree(char * path, int level)
 	int ctr = level;
 	while(ctr--)
 	  printf("│ ");
-	printf("├%s\n", p->d_name);
+	printf("├─%s\n", p->d_name);
 	if (p->d_type == 4)
 	  {
 	    char new[32];
@@ -134,11 +134,18 @@ long total_size(char * path)
   
 int main(int argc, char * argv[])
 {
+  char dir[32];
+  if (argc < 2)
+    {
+    printf("which dir?\n");
+    scanf("%s", dir);
+    }
+  else
+    strcpy(dir, argv[1]);
   printf("~~~~~~~~~~~~ll-style output~~~~~~~~~~~~\n");
-  printf("%s", argv[1]);
-  ll(argv[1]);
+  ll(dir);
   printf("~~~~~~~~~~~~tree-style output~~~~~~~~~~~~\n");
-  tree(argv[1], 0);
+  tree(dir, 0);
   printf("~~~~~~~~~~~~total size including subdirectories~~~~~~~~~~~~\n");
   printf("Total size: %ld KB\n", total_size(".") / 1024);
   //printf("│= pipe, ├ = junction,  ─ = horizontal bar\n");
